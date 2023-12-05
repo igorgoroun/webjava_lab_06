@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/html_head :: html_head(page_title=${form_title})}"></head>
+
+<body>
+<nav th:replace="~{layout/menubar :: menubar}"></nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-3" th:text="${form_title}"/>
+
+            <form th:action="${form_action}" role="form" method="post">
+                <input type="hidden" name="bank_id" th:if="${form_data}" th:value="${form_data.getId()}">
+                <div class="row mb-3">
+                    <label for="bankName" class="col-sm-2 col-form-label text-end">Назва</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="bankName" th:value="${form_data} ? ${form_data.name}" name="bankName">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="telNum" class="col-sm-2 col-form-label text-end">Телефон</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="telNum" th:value="${form_data} ? ${form_data.telNumber}" name="telNum">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-10 offset-2">
+                        <button type="submit" class="btn btn-primary">Зберегти</button>
+                        <a type="button" th:href="@{/bank/all}" class="btn btn-outline-secondary">Відміна</a>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!--<p th:text="${user.name}"/>-->
+<!--<p th:text="${user.age}"/>-->
+<div th:replace="~{layout/html_footer}"></div>
+</body>
+</html>
+

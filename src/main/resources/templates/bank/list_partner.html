@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/html_head :: html_head(page_title='Рахунки контрагентів')}"></head>
+
+<body>
+<nav th:replace="~{layout/menubar :: menubar}"></nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-3">Банківскі рахунки контрагентів</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>IBAN</th>
+                    <th>Банк</th>
+                    <th>Контрагент</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p:${accounts}">
+                    <td th:text="${p.iban}"/>
+                    <td th:text="${p.bank.name}"/>
+                    <td>
+                        <a th:text="${p.partner.name}" th:href="@{'/partner/' + ${p.partner.id}}" type="button" class="link-dark"/>
+                    </td>
+                    <td class="text-end">
+                        <div class="btn-group" role="group" aria-label="Дії">
+                            <a th:href="@{'/partner/' + ${p.partner.id} + '/bank/' + ${p.id} + '/edit'}" type="button" class="btn btn-outline-secondary btn-sm"><i class="bi-pencil"></i></a>
+                            <a th:href="@{'/partner/' + ${p.partner.id} + '/bank/' + ${p.id} + '/delete'}" type="button" onclick="return confirm('Ви впевнені?');" class="btn btn-outline-danger btn-sm"><i class="bi-trash-fill"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{layout/html_footer}"></div>
+
+</body>
+</html>
+

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/html_head :: html_head(page_title='Партнери')}"></head>
+
+<body>
+<nav th:replace="~{layout/menubar :: menubar}"></nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-3">Контрагенти <a th:href="@{/partner/new}" class="btn btn-outline-primary btn-sm"><i class="bi-plus-lg"></i> Створити</a></h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Назва</th>
+                    <th>Телефон</th>
+                    <th>ІПН</th>
+                    <th>ЄДРПОУ</th>
+                    <th class="text-center">Банк</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p:${partners}">
+                    <td>
+                        <a th:href="@{'/partner/' + ${p.id}}" class="link-dark" th:text="${p.name}"></a>
+                        <p class="text-muted" th:text="${p.address}"></p>
+                    </td>
+                    <td th:text="${p.telNumber}"/>
+                    <td th:text="${p.itn}"/>
+                    <td th:text="${p.reg}"/>
+                    <td class="text-center">
+                        <i th:if="${p.banks.isEmpty()}" class="bi bi-check-circle-fill text-danger"></i>
+                        <i th:if="!${p.banks.isEmpty()} and !${p.actualBankAccount}" class="bi bi-check-circle-fill text-warning"></i>
+                        <i th:if="!${p.banks.isEmpty()} and ${p.actualBankAccount}" class="bi bi-check-circle-fill text-success"></i>
+                    </td>
+                    <td class="text-end">
+                        <div class="btn-group" role="group" aria-label="Дії">
+                            <a th:href="@{'/partner/' + ${p.id}}" type="button" class="btn btn-outline-secondary btn-sm"><i class="bi-eye-fill"></i></a>
+                            <a th:href="@{'/partner/' + ${p.id} + '/edit'}" type="button" class="btn btn-outline-secondary btn-sm"><i class="bi-pencil"></i></a>
+                            <a th:href="@{/partner/delete(id=${p.id})}" type="button" onclick="return confirm('Ви впевнені?');" class="btn btn-outline-danger btn-sm"><i class="bi-trash-fill"></i></a>
+                        </div>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+<!--            <form action="/partner/create" method="post">-->
+<!--                <label for="name">Назва:</label><input id="name" name="name" type="text">-->
+<!--                <label for="addr">Адреса:</label><input id="addr" name="address" type="text">-->
+<!--                <input type="submit" value="Добавить">-->
+<!--            </form>-->
+        </div>
+    </div>
+</div>
+
+<!--<p th:text="${user.name}"/>-->
+<!--<p th:text="${user.age}"/>-->
+<div th:replace="~{layout/html_footer}"></div>
+</body>
+</html>
+

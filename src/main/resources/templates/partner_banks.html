@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Partner Banks</title>
+</head>
+<body>
+<h1 th:text="${partner.name}"></h1>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>IBAN</th>
+            <th>Bank Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="p:${partner.banks}">
+            <td th:text="${p.id}"/>
+            <td th:text="${p.iban}"/>
+            <td th:text="${p.bankName}"/>
+            <td><a th:href="@{/bank/delete(id=${p.id})}">delete</a></td>
+        </tr>
+    </tbody>
+</table>
+
+<form action="/bank/create" method="post">
+    <input type="hidden" name="partner_id" th:value="${partner.id}">
+    <label for="iban">IBAN:</label><input id="iban" name="iban" type="text">
+    <label for="bankName">Назва банку:</label><input id="bankName" name="bankName" type="text">
+    <input type="submit" value="Добавить">
+</form>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/html_head :: html_head(page_title=${form_title})}"></head>
+
+<body>
+<nav th:replace="~{layout/menubar :: menubar}"></nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-3" th:text="${form_title}"/>
+
+            <form th:action="${form_action}" role="form" method="post">
+                <input type="hidden" name="partner_id" th:if="${form_data}" th:value="${form_data.getId()}">
+                <input type="hidden" name="actualBankAccount" th:if="!${form_data} or ${form_data.banks.isEmpty()}" value="0">
+                <div class="row mb-3">
+                    <label for="partner_name" class="col-sm-2 col-form-label text-end">Назва</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="partner_name" th:value="${form_data} ? ${form_data.name}" name="partner_name">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="address" class="col-sm-2 col-form-label text-end">Адреса</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="address" th:value="${form_data} ? ${form_data.address}" name="address">
+                    </div>
+                    <label for="tel_num" class="col-sm-2 col-form-label text-end">Телефон</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="tel_num" th:value="${form_data} ? ${form_data.telNumber}" name="tel_num">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="itn" class="col-sm-2 col-form-label text-end">ІПН</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="itn" th:value="${form_data} ? ${form_data.itn}" name="itn">
+                    </div>
+                    <label for="reg" class="col-sm-2 col-form-label text-end">ЄДРПОУ</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="reg" th:value="${form_data} ? ${form_data.reg}" name="reg">
+                    </div>
+                </div>
+                <div class="row mb-3" th:if="${form_data} and !${form_data.banks.isEmpty()}">
+                    <label for="bank_account" class="col-sm-2 col-form-label text-end">Актуальний банківський рахунок</label>
+                    <div class="col-sm-10">
+                        <select th:field="*{form_data.actualBankAccount}" id="bank_account" class="form-select" aria-label="Актуальний банківський рахунок">
+                            <option value="0">-- не обрано --</option>
+                            <option th:each="b:${form_data.banks}" th:value="${b.getId()}" th:text="${b.bank.name} +' / '+ ${b.iban}"/>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="notes" class="col-sm-2 col-form-label text-end">Замітки</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="notes" th:text="${form_data} ? ${form_data.notes}" name="notes"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-10 offset-2">
+                        <button type="submit" class="btn btn-primary">Зберегти</button>
+                        <a type="button" th:if="${form_data}" th:href="@{'/partner/' + ${form_data.getId()}}" class="btn btn-outline-secondary">Відміна</a>
+                        <a type="button" th:if="!${form_data}" th:href="@{/partner/all}" class="btn btn-outline-secondary">Відміна</a>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!--<p th:text="${user.name}"/>-->
+<!--<p th:text="${user.age}"/>-->
+<div th:replace="~{layout/html_footer}"></div>
+</body>
+</html>
+

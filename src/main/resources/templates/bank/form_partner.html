@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/html_head :: html_head(page_title=${form_title})}"></head>
+
+<body>
+<nav th:replace="~{layout/menubar :: menubar}"></nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-3" th:text="${form_title}"/>
+            <h3 th:text="${partner.name}"/>
+
+            <form th:action="${form_action}" role="form" method="post">
+                <input type="hidden" name="partners_bank_id" th:if="${form_data}" th:value="${form_data.getId()}">
+
+                <div class="row mb-3">
+                    <label for="iban" class="col-sm-2 col-form-label text-end">IBAN</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="iban" th:value="${form_data} ? ${form_data.iban}" name="iban">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="bank" class="col-sm-2 col-form-label text-end">Банк</label>
+                    <div class="col-sm-4" th:if="${banks}">
+                        <select name="bank_id" id="bank" class="form-select" aria-label="Банк">
+                            <option value="0">-- обрати --</option>
+                            <option th:selected="${form_data} and ${b.id} == ${form_data.bank.id}" th:each="b:${banks}" th:value="${b.getId()}" th:text="${b.name}"/>
+                        </select>
+                    </div>
+                    <label for="new_bank_name" class="col-sm-2 col-form-label text-end">Або новий банк</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="new_bank_name" name="new_bank_name">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-10 offset-2">
+                        <button type="submit" class="btn btn-primary">Зберегти</button>
+                        <a type="button" th:href="@{'/partner/' + ${partner.getId()}}" class="btn btn-outline-secondary">Відміна</a>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="~{layout/html_footer}"></div>
+
+</body>
+</html>
+

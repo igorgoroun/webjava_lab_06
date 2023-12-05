@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/html_head :: html_head(page_title='Створити контрагента')}"></head>
+
+<body>
+<nav th:replace="~{layout/menubar :: menubar}"></nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-3 mb-0" th:text="${partner.name}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-5">
+            <a th:href="@{/partner/all}" class="btn btn-sm btn-link mb-3"><i class="bi bi-arrow-left"></i> Всі контрагенти</a>
+
+            <div class="alert alert-light" role="alert" th:if="${!partner.notes.isBlank()}" th:text="${partner.notes}"/>
+
+            <table role="table" class="table table-borderless table-_striped">
+                <tr>
+                    <td class="text-end">Адреса</td>
+                    <td th:text="${partner.address}"></td>
+                </tr>
+                <tr>
+                    <td class="text-end">Телефон</td>
+                    <td th:text="${partner.telNumber}"></td>
+                </tr>
+                <tr>
+                    <td class="text-end">ІПН</td>
+                    <td th:text="${partner.itn}"></td>
+                </tr>
+                <tr>
+                    <td class="text-end">ЄДРПОУ</td>
+                    <td th:text="${partner.reg}"></td>
+                </tr>
+                <tr th:if="!${partner.banks.isEmpty()}">
+                    <td class="text-end">Актуальний рахунок</td>
+                    <td th:if="${partner.actualBankAccount}" th:text="${partner.actualBankAccount.iban} +' / '+ ${partner.actualBankAccount.bank.name}"></td>
+                    <td th:if="!${partner.actualBankAccount}" class="bg-warning text-light">не встановлено</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <a th:href="@{'/partner/' +${partner.id}+ '/edit'}" class="btn btn-sm btn-outline-primary"><i class="bi-pencil"></i> Змінити</a>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="col-12 offset-md-1 col-md-6">
+            <h3 class="display">Банківські рахунки <a th:href="@{'/partner/' +${partner.getId()}+ '/bank/new'}" class="btn btn-outline-primary btn-sm"><i class="bi-plus-lg"></i> Додати</a></h3>
+            <table class="table">
+                <thead>
+                <tr>
+<!--                    <th>ID</th>-->
+                    <th>IBAN</th>
+                    <th>Назва банку</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="b:${partner.banks}">
+<!--                    <td th:text="${p.id}"/>-->
+                    <td th:text="${b.iban}"/>
+                    <td th:text="${b.bank.name}"/>
+                    <td class="text-end">
+                        <div class="btn-group" role="group" aria-label="Дії">
+                            <a th:href="@{'/partner/' +${partner.getId()}+ '/bank/' +${b.getId()}+ '/edit'}" class="btn btn-outline-secondary btn-sm pt-0 pb-0"><i class="bi-pencil"></i></a>
+                            <a th:href="@{'/partner/' +${partner.getId()}+ '/bank/' +${b.getId()}+ '/delete'}"  onclick="return confirm('Ви впевнені?');" class="btn btn-outline-danger btn-sm pt-0 pb-0"><i class="bi-trash-fill"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!--<p th:text="${user.name}"/>-->
+<!--<p th:text="${user.age}"/>-->
+<div th:replace="~{layout/html_footer}"></div>
+</body>
+</html>
+
